@@ -63,12 +63,19 @@ function handleLocationError(browserHasGeolocation, infoWindow) {
     getNearbyPlaces(pos);
 }
 function getNearbyPlaces(position) {
-    let request = {
+   if (document.getElementById("differentPlaces").value == "1"){
+        let request = {
     location: position,
     rankBy: google.maps.places.RankBy.DISTANCE,
     type: 'cafe',
     keyword: 'dog-friendly'
-    };
+    } (document.getElementById("differentPlaces").value == "2"){
+        let request = {
+    location: position,
+    rankBy: google.maps.places.RankBy.DISTANCE,
+    type: 'restaurants',
+    keyword: 'dog-friendly'
+    }};
 
     service = new google.maps.places.PlacesService(map);
     service.nearbySearch(request, nearbyCallback);
@@ -85,7 +92,8 @@ function createMarkers(places) {
     let marker = new google.maps.Marker({
         position: place.geometry.location,
         map: map,
-        title: place.name
+        title: place.name,
+    
     });/* TODO: Step 4B: Add click listeners to the markers */
 
     // Adjust the map bounds to include the location of this marker
@@ -95,80 +103,7 @@ function createMarkers(places) {
     * show all the markers within the visible area. */
     map.fitBounds(bounds);
 }
-infoPane = document.getElementById('panel');
-google.maps.event.addListener(marker, 'click', () => {
-    let request = {
-    placeId: place.place_id,
-    fields: ['name', 'formatted_address', 'geometry', 'rating',
-        'website', 'photos']
-    };
 
-    /* Only fetch the details of a place when the user clicks on a marker.
-    * If we fetch the details for all place results as soon as we get
-    * the search response, we will hit API rate limits. */
-    service.getDetails(request, (placeResult, status) => {
-    showDetails(placeResult, marker, status)
-    });
-});
-function showDetails(placeResult, marker, status) {
-    if (status == google.maps.places.PlacesServiceStatus.OK) {
-    let placeInfowindow = new google.maps.InfoWindow();
-    placeInfowindow.setContent('<div><strong>' + placeResult.name +
-        '</strong><br>' + 'Rating: ' + placeResult.rating + '</div>');
-    placeInfowindow.open(marker.map, marker);
-    currentInfoWindow.close();
-    currentInfoWindow = placeInfowindow;
-    showPanel(placeResult);
-    } else {
-    console.log('showDetails failed: ' + status);
-    }
-}
-function showPanel(placeResult) {
-    // If infoPane is already open, close it
-    if (infoPane.classList.contains("open")) {
-    infoPane.classList.remove("open");
-    }
-
-    // Clear the previous details
-    while (infoPane.lastChild) {
-    infoPane.removeChild(infoPane.lastChild);
-    }
-
-    /* TODO: Step 4E: Display a Place Photo with the Place Details */
-
-    // Add place details with text formatting
-    let name = document.createElement('h1');
-    name.classList.add('place');
-    name.textContent = placeResult.name;
-    infoPane.appendChild(name);
-    if (placeResult.rating != null) {
-    let rating = document.createElement('p');
-    rating.classList.add('details');
-    rating.textContent = `Rating: ${placeResult.rating} \u272e`;
-    infoPane.appendChild(rating);
-    }
-    let address = document.createElement('p');
-    address.classList.add('details');
-    address.textContent = placeResult.formatted_address;
-    infoPane.appendChild(address);
-    if (placeResult.website) {
-    let websitePara = document.createElement('p');
-    let websiteLink = document.createElement('a');
-    let websiteUrl = document.createTextNode(placeResult.website);
-    websiteLink.appendChild(websiteUrl);
-    websiteLink.title = placeResult.website;
-    websiteLink.href = placeResult.website;
-    websitePara.appendChild(websiteLink);
-    infoPane.appendChild(websitePara);
-    }
-
-    // Open the infoPane
-    infoPane.classList.add("open");
-}
-if (placeResult.photos != null) {
-    let firstPhoto = placeResult.photos[0];
-    let photo = document.createElement('img');
-    photo.classList.add('hero');
-    photo.src = firstPhoto.getUrl();
-    infoPane.appendChild(photo);
-}
+function changePlaces (getNearbyPlaces){
+    
+}}
