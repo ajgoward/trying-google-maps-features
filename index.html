@@ -13,11 +13,12 @@
   </head>
   <body>
    <select name="differentPlaces" id="differentPlaces" onchange=" getNearbyPlaces()">
-   <option value="1">please select</option>
-   <option value="2">Cafes</option>
+   <option >please select</option>
+   <option id="cafe" onclick="getNearbyPlaces(position)">Cafes</option>
    <option value="3">Parks</option>
    <option value="4">Pubs</option>
    </select>
+   <div id="panel"></div>
   
     <div id="map"></div>
      
